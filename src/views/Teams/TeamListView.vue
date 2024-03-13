@@ -1,17 +1,16 @@
 <template>
   <div>
-    <OrgsList></OrgsList>
+    <TeamsList></TeamsList>
   </div>
 </template>
 
 
 <script>
 
-import OrgsList from "@/components/Orgs/OrgsList.vue";
-
+import TeamsList from "@/components/Teams/TeamsList.vue";
 export default {
   components:{
-    OrgsList
+    TeamsList
   }
 
 }

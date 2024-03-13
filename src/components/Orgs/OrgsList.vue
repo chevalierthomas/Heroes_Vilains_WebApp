@@ -1,83 +1,66 @@
 <template>
   <div>
-    <h2>Liste des Organisations</h2>
+    <h3>Liste des Organisations</h3>
+
+    <v-btn @click="addOrgDialog = true">Ajouter Organisation</v-btn>
+    <v-btn color="green" @click="defineSecretDialog = true">Définir Secret</v-btn>
+
+    <!-- Dialogues -->
+    <PasswordDialog :dialog="defineSecretDialog" @update:dialog="defineSecretDialog = $event"></PasswordDialog>
+    <AddOrgDialog :dialog="addOrgDialog" @update:dialog="addOrgDialog = $event"></AddOrgDialog>
+
+    <!-- Tableau des organisations -->
     <v-data-table
         :headers="tableHeaders"
-        :items="flattenedData"
+        :items="orgs"
         @click:row="selectOrg"
         class="elevation-1"
     >
     </v-data-table>
-    <v-btn @click="dialog = true">Ajouter Organisation</v-btn>
-    <v-dialog v-model="dialog" persistent max-width="600px">
-      <v-card>
-        <v-card-title>
-          <span class="headline">Nouvelle Organisation</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-text-field label="Nom" v-model="newOrg.name"></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="Mot de passe" v-model="newOrg.password" type="password"></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">Annuler</v-btn>
-          <v-btn color="blue darken-1" text @click="createOrg">Créer</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
+import PasswordDialog from "@/components/Orgs/PasswordDialog.vue";
+import AddOrgDialog from "@/components/Orgs/AddOrgDialog.vue"; // Assurez-vous que le chemin est correct
 
 export default {
+  components: {
+    PasswordDialog,
+    AddOrgDialog
+  },
+
   data() {
     return {
       tableHeaders: [
-        {text: 'ID', value: '_id'},
-        {text: 'Nom', value: 'name'}
+        { text: 'ID', value: '_id' },
+        { text: 'Nom', value: 'name' }
       ],
-      flattenedData: [],
-      dialog: false,
-      newOrg: {
-        name: '',
-        password: ''
-      }
-    }
+      defineSecretDialog: false,
+      addOrgDialog: false
+    };
   },
 
   async mounted() {
     await this.loadData();
-    this.flattenedData = this.orgs.flat();
   },
+
   computed: {
-    ...mapState(['orgs']),
+    ...mapState("main",['orgs']),
   },
+
   methods: {
-    ...mapActions(['getAllOrgs', 'createOrg', 'getOrgById']),
+    ...mapActions("main",['getAllOrgs', 'appendOrg', 'setCurrentOrg']),
     async loadData() {
       if (this.orgs.length === 0) {
         await this.getAllOrgs();
       }
     },
-    async createOrg() {
-      await this.createOrg(this.newOrg);
-      this.dialog = false;
-      this.newOrg = {name: '', password: ''}; // Réinitialiser le formulaire
-      await this.loadData(); // Recharger la liste après création
-    },
-    selectOrg(org) {
-      this.getOrgById(org._id);
-      this.$router.push({name: 'OrgDetails', params: {orgId: org._id}}); // Remplacez 'OrgDetails' par le nom de votre route
+    async selectOrg(org) {
+      await this.setCurrentOrg(org._id);
+      // Redirection vers la page orgDetails après avoir défini l'organisation courante
+      this.$router.push({ name: 'orgDetails' });
     }
   }
 }

@@ -2,13 +2,12 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
-
 export default {
   namespaced: true,
-  state: {
+  state: ({
     isError: false,
     errorMsg: '',
-  },
+  }),
   mutations: {
     pushError(state, msg){
       state.errorMsg = msg

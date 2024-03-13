@@ -1,19 +1,9 @@
 <template>
   <div>
-    <h3>Liste des Organisations</h3>
-
-    <v-btn @click="addOrgDialog = true">Ajouter Organisation</v-btn>
-    <v-btn color="green" @click="defineSecretDialog = true">Définir Secret</v-btn>
-
-    <!-- Dialogues -->
-    <PasswordDialog :dialog="defineSecretDialog" @update:dialog="defineSecretDialog = $event"></PasswordDialog>
-    <AddOrgDialog :dialog="addOrgDialog" @update:dialog="addOrgDialog = $event"></AddOrgDialog>
-
-    <!-- Tableau des organisations -->
+    <h3>Liste des Héros</h3>
     <v-data-table
         :headers="tableHeaders"
-        :items="orgs"
-        @click:row="selectOrg"
+        :items="heroes"
         class="elevation-1"
     >
     </v-data-table>
@@ -22,46 +12,35 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import PasswordDialog from "@/components/Orgs/PasswordDialog.vue";
-import AddOrgDialog from "@/components/Orgs/AddOrgDialog.vue"; // Assurez-vous que le chemin est correct
 
 export default {
   components: {
-    PasswordDialog,
-    AddOrgDialog
   },
 
   data() {
     return {
       tableHeaders: [
         { text: 'ID', value: '_id' },
-        { text: 'Nom', value: 'name' }
+        { text: 'Nom Public', value: 'publicName' }
       ],
-      defineSecretDialog: false,
-      addOrgDialog: false
     };
   },
 
   async mounted() {
-    await this.loadData();
+    await this.loadHeroes();
   },
 
   computed: {
-    ...mapState("main",['orgs']),
+    ...mapState("main", ['heroes']),
   },
 
   methods: {
-    ...mapActions("main",['getAllOrgs', 'appendOrg', 'setCurrentOrg']),
-    async loadData() {
-      if (this.orgs.length === 0) {
-        await this.getAllOrgs();
+    ...mapActions("main", ['getAllHeroes']), // Ajustez les noms d'actions selon vos besoins
+    async loadHeroes() {
+      if (this.heroes.length === 0) {
+        await this.getAllHeroes();
       }
     },
-    async selectOrg(org) {
-      await this.setCurrentOrg(org._id);
-      // Redirection vers la page orgDetails après avoir défini l'organisation courante
-      this.$router.push({ name: 'orgDetails' });
-    }
   }
 }
 </script>

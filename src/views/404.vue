@@ -1,11 +1,12 @@
-<script setup>
-
-</script>
-
 <template>
-
+  <div>
+    <h1>404 - Page non trouvée</h1>
+    <p>Désolé, la page que vous cherchez n'existe pas.</p>
+  </div>
 </template>
 
-<style scoped>
-
-</style>
+<script>
+export default {
+  name: 'NotFound'
+}
+</script>

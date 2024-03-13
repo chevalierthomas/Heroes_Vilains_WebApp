@@ -2,16 +2,13 @@
   <v-dialog v-model="show" persistent max-width="600px">
     <v-card>
       <v-card-title>
-        <span class="headline">Nouvelle Organisation</span>
+        <span class="headline">Nouvelle Équipe</span>
       </v-card-title>
       <v-card-text>
         <v-container>
           <v-row>
             <v-col cols="12">
-              <v-text-field label="Nom" v-model="newOrg.name"></v-text-field>
-            </v-col>
-            <v-col cols="12">
-              <v-text-field label="Mot de passe" v-model="newOrg.secret" type="password"></v-text-field>
+              <v-text-field label="Nom de l'équipe" v-model="newTeam.name"></v-text-field>
             </v-col>
           </v-row>
         </v-container>
@@ -19,7 +16,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="close">Annuler</v-btn>
-        <v-btn color="blue darken-1" text @click="createOrg">Créer</v-btn>
+        <v-btn color="blue darken-1" text @click="createTeam">Créer</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -38,9 +35,8 @@ export default {
   data() {
     return {
       show: this.dialog,
-      newOrg: {
+      newTeam: {
         name: '',
-        secret: ''
       }
     };
   },
@@ -50,15 +46,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['appendOrg']),
+    ...mapActions('main',['appendTeam']), // Supposons que 'appendTeams' est l'action pour ajouter une nouvelle équipe
     close() {
       this.$emit('update:dialog', false);
     },
-    async createOrg() {
-      if (this.newOrg.name && this.newOrg.secret) {
-        await this.appendOrg(this.newOrg);
+    async createTeam() {
+      if (this.newTeam.name) {
+        console.log(this.newTeam)
+        await this.appendTeam(this.newTeam);
         this.close();
-        this.newOrg = { name: '', secret: '' }; // Réinitialiser le formulaire
+        this.newTeam = { name: '' }; // Réinitialiser le formulaire
       }
     }
   }

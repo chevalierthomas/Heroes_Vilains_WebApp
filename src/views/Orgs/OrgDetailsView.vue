@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import OrgDetails from '@/components/Orgs/OrgDetails.vue';
+import OrgDetails from '@/components/Orgs/OrgManagment/OrgDetails.vue';
 
 export default {
   components: {

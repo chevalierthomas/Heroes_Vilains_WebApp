@@ -1,15 +1,14 @@
 <template>
   <div>
-    <OrgDetails/>
+    <teamDetails/>
   </div>
 </template>
 
 <script>
-import OrgDetails from '@/components/Orgs/OrgDetails.vue';
-
+import teamDetails from "@/components/Teams/TeamDetails.vue";
 export default {
   components: {
-    OrgDetails
+    teamDetails
   }
 };
 </script>

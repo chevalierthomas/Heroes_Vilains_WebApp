@@ -1,19 +1,16 @@
 <template>
   <div>
-    <h3>Liste des Organisations</h3>
+    <h3>Liste des Équipes</h3>
 
-    <v-btn @click="dialog = true">Ajouter Organisation</v-btn>
-    <v-btn color="green" @click="defineSecretDialog = true">Définir Secret</v-btn>
+    <v-btn color="primary" @click="addTeamDialog = true">Ajouter Équipe</v-btn>
 
-    <!-- Dialogues -->
-    <PasswordDialog :dialog="defineSecretDialog" @update:dialog="defineSecretDialog = $event"></PasswordDialog>
-    <AddOrgDialog :dialog="dialog" @update:dialog="dialog = $event"></AddOrgDialog>
+    <AddTeamDialog :dialog="addTeamDialog" @update:dialog="addTeamDialog = $event"></AddTeamDialog>
 
-    <!-- Tableau des organisations -->
+    <!-- Tableau des équipes -->
     <v-data-table
         :headers="tableHeaders"
-        :items="orgs"
-        @click:row="selectOrg"
+        :items="teams"
+        @click:row="selectTeam"
         class="elevation-1"
     >
     </v-data-table>
@@ -22,45 +19,36 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import PasswordDialog from "@/components/Orgs/PasswordDialog.vue";
-import AddOrgDialog from "@/components/Orgs/AddOrgDialog.vue"; // Assurez-vous que le chemin est correct
+import AddTeamDialog from "@/components/Teams/AddTeamDialog.vue"; // Assurez-vous que le chemin vers le composant est correct
 
 export default {
   components: {
-    PasswordDialog,
-    AddOrgDialog
+    AddTeamDialog
   },
 
   data() {
     return {
       tableHeaders: [
-        { text: 'ID', value: '_id' },
-        { text: 'Nom', value: 'name' }
+        {text: 'ID', value: '_id'},
+        {text: 'Nom de l’équipe', value: 'name'},
+        {text: 'Affiliations', value: 'nbAffiliations'}
       ],
-      defineSecretDialog: false,
-      dialog: false
+      addTeamDialog: false // Contrôle l'affichage du dialogue pour ajouter une équipe
     };
   },
 
   async mounted() {
-    await this.loadData();
+    await this.loadTeams();
   },
 
   computed: {
-    ...mapState(['orgs']),
+    ...mapState('main',['teams']), // Récupère les données des équipes depuis le store Vuex
   },
 
   methods: {
-    ...mapActions(['getAllOrgs', 'appendOrgs', 'setCurrentOrg']),
-    async loadData() {
-      if (this.orgs.length === 0) {
-        await this.getAllOrgs();
-      }
-    },
-    async selectOrg(org) {
-      await this.setCurrentOrg(org._id);
-      // Redirection vers la page orgDetails après avoir défini l'organisation courante
-      this.$router.push({ name: 'orgDetails' });
+    ...mapActions('main',['getAllTeams']), // Lie l'action Vuex pour récupérer toutes les équipes
+    async loadTeams() {
+      await this.getAllTeams();
     }
   }
 }
@@ -68,3 +56,4 @@ export default {
 
 <style scoped>
 </style>
+
