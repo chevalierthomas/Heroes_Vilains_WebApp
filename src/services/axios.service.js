@@ -1,9 +1,8 @@
 import axios from 'axios'
 import store from "@/store";
-import Config from "@/commons/config";
 
 const axiosAgent = axios.create({
-  baseURL: Config.urlAPI,
+  baseURL: "https://apidemo.iut-bm.univ-fcomte.fr",
   withCredentials : true,
 });
 
@@ -26,7 +25,7 @@ axiosAgent.interceptors.request.use(config => {
 });
 function handleError(serviceName, err) {
   if (err.response) {
-    // la requête a été reçue par le serveur mais celui-ci renvoie un status != 2XX, ce qui signifie
+        // la requête a été reçue par le serveur mais celui-ci renvoie un status != 2XX, ce qui signifie
     // une erreur. Par exemple, il peut renovyer un status 404 pour dire que la ressource demandée n'existe pas.
     console.log("ERROR while calling SERVICE " + serviceName + ": " + JSON.stringify(err.response));
     // on retourne un objet qui a la même structure qu'une réponse normale sans erreur.
