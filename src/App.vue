@@ -2,7 +2,7 @@
   <v-app>
 
     <v-app-bar app>
-      <router-link :to="{ name: 'home' }" tag="div">
+      <router-link style="cursor: pointer" :to="{ name: 'home' }" tag="div">
         <v-toolbar-title>Heroes & Vilains</v-toolbar-title>
       </router-link>
 
@@ -16,7 +16,7 @@
 
       <template v-if="auth">
         <span class="mr-4 subtitle-1">{{ getUserInfoName }}</span>
-        <v-btn class="mr-4"  :to="{ name: 'UserAccount' }">espace personnelle</v-btn>
+        <v-btn class="mr-4"  :to="{ name: 'UserAccount' }">espace personnel</v-btn>
         <v-btn color="red" text @click="logout">Déconnexion</v-btn>
       </template>
       <template v-else>

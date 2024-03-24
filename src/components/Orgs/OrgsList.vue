@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <h3>Liste des Organisations</h3>
+  <v-container>
+    <h3 class="mt-6 mb-4">Liste des Organisations</h3>
 
-    <v-btn @click="addOrgDialog = true">Ajouter Organisation</v-btn>
+    <v-btn @click="addOrgDialog = true" class="mr-4">Ajouter Organisation</v-btn>
     <v-btn color="green" @click="defineSecretDialog = true">Définir Secret</v-btn>
 
     <!-- Dialogues -->
@@ -14,10 +14,10 @@
         :headers="tableHeaders"
         :items="orgs"
         @click:row="selectOrg"
-        class="elevation-1"
-    >
-    </v-data-table>
-  </div>
+        class="elevation-1 mt-4"
+        :search="search"
+    ></v-data-table>
+  </v-container>
 </template>
 
 <script>
@@ -38,7 +38,8 @@ export default {
         { text: 'Nom', value: 'name' }
       ],
       defineSecretDialog: false,
-      addOrgDialog: false
+      addOrgDialog: false,
+      search: ''
     };
   },
 
@@ -47,11 +48,11 @@ export default {
   },
 
   computed: {
-    ...mapState("main",['orgs']),
+    ...mapState("main", ['orgs']),
   },
 
   methods: {
-    ...mapActions("main",['getAllOrgs', 'appendOrg', 'setCurrentOrg']),
+    ...mapActions("main", ['getAllOrgs', 'appendOrg', 'setCurrentOrg']),
     async loadData() {
       if (this.orgs.length === 0) {
         await this.getAllOrgs();
@@ -60,7 +61,7 @@ export default {
     async selectOrg(org) {
       await this.setCurrentOrg(org._id);
       // Redirection vers la page orgDetails après avoir défini l'organisation courante
-      this.$router.push({ name: 'orgDetails' });
+      this.$router.push({name: 'orgDetails'});
     }
   }
 }

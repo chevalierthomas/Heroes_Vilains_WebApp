@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   props: ['hero'],
@@ -87,14 +87,11 @@ export default {
     openDialog() {
       this.editHero = JSON.parse(JSON.stringify(this.hero));
       this.dialog = true;
-    },
 
-    convertPowerTypes() {
-      this.editHero.powers.forEach((power, index) => {
-        const typeIndex = this.type_heroes.findIndex(type => type === power.type);
-        if (typeIndex !== -1) {
-          // Ajustez l'index pour commencer à partir de 1 au lieu de 0 et assurez-vous que c'est un entier
-          this.editHero.powers[index].type = parseInt(typeIndex + 1, 10); // Le second argument 10 spécifie la base (décimale dans ce cas)
+      // Convertir les index des types en valeurs correspondantes
+      this.editHero.powers.forEach((power) => {
+        if (power.type >= 0 && power.type < this.type_heroes.length) {
+          power.type = this.type_heroes[power.type].type;
         }
       });
     },
@@ -104,14 +101,13 @@ export default {
     },
 
     async updateHero() {
-      this.convertPowerTypes();
       console.log(this.editHero);
       await this.updateCurrentHero(this.editHero);
       this.closeDialog();
       this.$emit('reloadMembers'); // Cela déclenchera la recharge des membres dans le composant parent
     },
     addPower() {
-      this.editHero.powers.push({ name: '', type: this.type_heroes[0], level: 0 });
+      this.editHero.powers.push({ name: '', type: this.type_heroes[0].type, level: 0 });
     },
     removePower(index) {
       this.editHero.powers.splice(index, 1);

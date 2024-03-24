@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h3>Liste des Équipes</h3>
+  <v-container>
+    <h3 class="mt-6 mb-4">Liste des Équipes</h3>
 
     <v-btn color="primary" @click="addTeamDialog = true">Ajouter Équipe</v-btn>
 
@@ -10,11 +10,10 @@
     <v-data-table
         :headers="tableHeaders"
         :items="teams"
-        @click:row="selectTeam"
-        class="elevation-1"
+        class="elevation-1 mt-4"
     >
     </v-data-table>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -56,4 +55,3 @@ export default {
 
 <style scoped>
 </style>
-

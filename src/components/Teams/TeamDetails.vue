@@ -1,22 +1,18 @@
 <template>
-  <div>
-    <h3>Détails de l'équipe</h3>
-    <v-card>
+  <v-container>
+    <h3 class="mt-6">Détails de l'équipe</h3>
+    <v-card class="mt-4">
       <v-card-title>{{ currentTeam.name }}</v-card-title>
       <v-card-text>
         <p>ID: {{ currentTeam._id }}</p>
-        <v-divider></v-divider>
-        <h3>Héros</h3>
+        <v-divider> class="mt-4</v-divider>
+        <h3 class="mt-4">Héros</h3>
 
-        <div>
-
+        <div class="d-flex row mt-4 mb-6 ml-1">
           <AddHeroesToTeam></AddHeroesToTeam>
           <CreateHeroToTeam></CreateHeroToTeam>
-
           <!-- Bouton pour activer le mode de sélection -->
           <v-btn  color="red"   @click="toggleSelectionMode">Supprimer des héros</v-btn>
-
-
         </div>
 
         <v-data-table
@@ -54,7 +50,7 @@
     </v-card>
 
     <editHeroesToTeam :hero="selectedHero" @reloadMembers="loadTeamMembers" ref="editHeroDialog"/>
-  </div>
+  </v-container>
 </template>
 
 <script>
