@@ -37,6 +37,9 @@ export default{
         },
         SET_USER_INFO(state, userInfo) {
             state.userInfo = userInfo;
+        },
+        SET_USER_INFO_HERO(state, hero) {
+            state.userInfo.hero = hero;
         }
     },
     actions: {
@@ -98,7 +101,7 @@ export default{
 
             console.log(response);
             if (response.error === 0) {
-                commit('SET_USER_INFO', response.data);
+                commit('SET_USER_INFO_HERO', response.data);
             } else {
                 console.error('Erreur lors de la récupération des informations utilisateur:', response.data.data);
             }
